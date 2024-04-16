@@ -1,0 +1,74 @@
+.datatable {
+    margin-top: 10px;
+}
+
+.btn1 {
+    display: flex;
+    gap: 4px;
+}
+
+.child {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form {
+    margin: 5px auto;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.filldata {
+    display: flex;
+    justify-content: space-between;
+}
+
+.filldata1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn2 {
+    height: auto;
+    color: black;
+    background-color: rgba(0, 0, 0, .125);
+    border-radius: 7px;
+    border-style: none;
+    width: auto;
+    padding: 4px 12px;
+}
+
+.successpopup {
+    --bs-modal-width: 700px !important;
+}
+
+.blur {
+    filter: blur(3px);
+}
+
+.conflict-msg {
+    display: none;
+    font-size: 14px;
+    color: red;
+}
+
+.success-msg {
+    display: none;
+    font-size: 16px;
+    font-weight: 400;
+    color: #4a934a;
+}
+
+.show {
+    display: block;
+}
+.child{
+    width: auto;
+}
+#addManually{
+    width: 125px;
+}
+#add{
+    margin-top: 8px;
+}

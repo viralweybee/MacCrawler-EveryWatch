@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+    <script src="https://apis.google.com/js/api.js"></script>
+    <link rel="stylesheet" href="manufactures.css">
+</head>
+
+<body>
+    <!------------------------------------------------------------------------------------- NavBar ---------------------------------------------------------------------->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Mac Crawler</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+    <div class="blur1">
+        <!------------------------------------------------------------------------------ Delete Popup ---------------------------------------------------------------------->
+        <div class="modal fade successpopup" id="DeleteModal" tabindex="-1"
+            aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Are you sure!!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="fillDetails" class="modal-body">
+                        <h5>You want to Delete this ?</h5>
+                        <span id="delete_data"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="confirm_delete" type="button" class="btn btn-success">Ok</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!------------------------------------------------------------------------ Google sheet / .txt .csv popup -------------------------------------------------------------->
+        <div class="modal fade successpopup" id="successmodal" tabindex="-1"
+            aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div id="fillDetails" class="modal-body">
+                        <table id="popup-table" class="container table">
+                            <thead>
+
+                            </thead>
+                            <tbody id="popup-table-body">
+
+                                <tr>
+                                    <th scope="row">Wait bro Api is Loading.......................</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="SaveAll" data-toggle="tooltip" title="This will add all variant with given id"
+                            type="button" class="btn btn-success" data-bs-dismiss="modal">Add All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!----------------------------------------------------------------------------------- Button trigger modal ----------------------------------------------------------->
+        <div class="container trigger-modal" style="display: flex;">
+            <div class="container child">
+                <div class="add">
+                    <button id="addManually" type="button" class="btn btn-success mt-2" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        Add Manually
+                    </button>
+                </div>
+            </div>
+            <div class="container">
+               
+            </div>
+        </div>
+
+        <div class="container form">
+            <div class="add mt-2 container">
+                <input id="sheetName" class="form-control" type="text" placeholder="Sheet-Name">
+                <span class="m-1"></span>
+                <input id="googleSheet" class="form-control mr-5" type="text" placeholder="Enter the google sheet link">
+                <span>Column : </span><input id="column" class="form-control"
+                    placeholder="Default A column Enter between A to Z" type="text"><span> Row : </span>
+                <input id="row" class="form-control" placeholder="Default 1 Enter positive integer" type="text">
+                <span class="m-1"><b>or</b></span>
+                <input class="form-control" id="file" type="file"
+                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+                <span class="m-1"></span>
+                <br>
+                <button type="button" id="add" class="btn btn-success ">Add</button>
+            </div>
+        </div>
+        <!------------------------------------------------------------------------------------- This is accordion -------------------------------------------------------------->
+        <!-- <div class="accordion container" id="accordionExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Add Item
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <!-- HTML for the loader -->
+    <div id="loader" class="d-none">
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="blur1">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <span>Id</span>
+                        <input id="manufactureId" class="form-control" type="number">
+                        <span>Name</span>
+                        <input id="manufactureName" class="form-control" type="text"
+                            aria-describedby="inputGroupPrepend2" required>
+                        <span class="conflict-msg show">This Manufacturer Name is already exists</span>
+                        <span>Count</span>
+                        <input id="manufactureCount" class="form-control" type="text">
+                        <span class="success-msg show">Successfully Added</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="save" type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container datatable">
+            <table id="example" class="display container">
+                <thead>
+
+                </thead>
+                <tbody id="table">
+                    <tr>
+                        <th scope="row"> Wait bro Api is Loading.......................</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <script type="module" src="manufactures.js"></script>
+
+</body>
+
+</html>
